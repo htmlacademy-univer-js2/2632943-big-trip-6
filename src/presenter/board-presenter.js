@@ -2,6 +2,7 @@ import SortView from '../view/sort-view.js';
 import EventListView from '../view/event-list-view.js';
 import EventEditView from '../view/event-edit-view.js';
 import PointView from '../view/point-view.js';
+import ListEmptyView from '../view/list-empty-view.js';
 import {render, replace} from '../framework/render.js';
 
 export default class BoardPresenter {
@@ -10,6 +11,7 @@ export default class BoardPresenter {
 
   #sortComponent = new SortView();
   #eventListComponent = new EventListView();
+  #listEmptyComponent = new ListEmptyView();
 
   #boardPoints = [];
   #destinations = [];
@@ -24,6 +26,15 @@ export default class BoardPresenter {
     this.#boardPoints = [...this.#pointsModel.getPoints()];
     this.#destinations = this.#pointsModel.getDestinations();
     this.#offers = this.#pointsModel.getOffers();
+
+    this.#renderBoard();
+  }
+
+  #renderBoard() {
+    if (this.#boardPoints.length === 0) {
+      render(this.#listEmptyComponent, this.#boardContainer);
+      return;
+    }
 
     render(this.#sortComponent, this.#boardContainer);
     render(this.#eventListComponent, this.#boardContainer);
