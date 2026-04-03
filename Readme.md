@@ -1,7 +1,7 @@
 # Проект «Большое путешествие»
 
-* Студент: [Владислав Исупов](https://up.htmlacademy.ru/univer-js2/6/user/2632943).
-* Наставник: `Неизвестно`.
+- Студент: [Владислав Исупов](https://up.htmlacademy.ru/univer-js2/6/user/2632943).
+- Наставник: [Александр Сударев](https://htmlacademy.ru/profile/id1152185).
 
 ---
 
