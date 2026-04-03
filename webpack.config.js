@@ -18,7 +18,7 @@ module.exports = {
       patterns: [
         {
           from: 'public',
-          to: 'build',
+          to: '.', // Copies into the build directory
           globOptions: {
             ignore: ['**/index.html'],
           },
