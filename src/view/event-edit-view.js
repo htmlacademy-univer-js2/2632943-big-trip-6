@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import {TYPES} from '../mock/offers.js';
 import dayjs from 'dayjs';
 
@@ -147,25 +147,41 @@ function createEventEditTemplate(point, allDestinations, allOffers) {
   );
 }
 
-export default class EventEditView {
-  constructor({point = BLANK_POINT, pointDestinations, pointOffers}) {
-    this.point = point;
-    this.pointDestinations = pointDestinations;
-    this.pointOffers = pointOffers;
-  }
+export default class EventEditView extends AbstractView {
+  #point = null;
+  #pointDestinations = null;
+  #pointOffers = null;
+  #handleFormSubmit = null;
+  #handleCloseClick = null;
 
-  getTemplate() {
-    return createEventEditTemplate(this.point, this.pointDestinations, this.pointOffers);
-  }
+  constructor({point = BLANK_POINT, pointDestinations, pointOffers, onFormSubmit, onCloseClick}) {
+    super();
+    this.#point = point;
+    this.#pointDestinations = pointDestinations;
+    this.#pointOffers = pointOffers;
+    this.#handleFormSubmit = onFormSubmit;
+    this.#handleCloseClick = onCloseClick;
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
+
+    // Only if it's edit point will the button exist
+    const rollupBtn = this.element.querySelector('.event__rollup-btn');
+    if (rollupBtn) {
+      rollupBtn.addEventListener('click', this.#closeClickHandler);
     }
-    return this.element;
   }
 
-  removeElement() {
-    this.element = null;
+  get template() {
+    return createEventEditTemplate(this.#point, this.#pointDestinations, this.#pointOffers);
   }
+
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFormSubmit();
+  };
+
+  #closeClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleCloseClick();
+  };
 }
